@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MVP Meeter - Random 1:1</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; background:#0f172a; color:#e2e8f0; }
+      header { padding:16px; background:#111827; border-bottom:1px solid #1f2937; }
+      main { padding:16px; display:flex; flex-direction:column; gap:12px; max-width: 960px; margin: 0 auto; }
+      .videos { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+      video { width:100%; background:#111827; border:1px solid #374151; border-radius:8px; aspect-ratio: 16/9; }
+      .controls { display:flex; gap:8px; align-items:center; flex-wrap: wrap; }
+      .toggle { display:flex; align-items:center; gap:6px; margin-left:8px; }
+      button { padding:10px 14px; border-radius:8px; border:1px solid #334155; background:#1f2937; color:#e2e8f0; cursor:pointer; }
+      button[disabled] { opacity: 0.5; cursor: not-allowed; }
+      .status { font-size: 14px; color:#93c5fd; }
+      a { color: #93c5fd; }
+      @media (max-width: 700px) {
+        .videos { display:flex; flex-direction:column; }
+        video { aspect-ratio: 9/16; object-fit: cover; }
+        header { position: sticky; top: 0; z-index: 10; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <strong>MVP Meeter</strong> — สุ่มคุยแบบ 1:1 ด้วยกล้อง/ไมค์
+    </header>
+    <main>
+      <div class="controls">
+        <input id="nameInput" placeholder="ใส่ชื่อเล่นก่อนใช้งาน" maxlength="32" style="padding:10px;border-radius:8px;border:1px solid #334155;background:#0b1220;color:#e2e8f0;" />
+        <button id="saveNameBtn">บันทึกชื่อ</button>
+      </div>
+      <div class="controls">
+        <button id="findBtn">เริ่มค้นหา</button>
+        <button id="leaveBtn" disabled>ออกจากห้อง</button>
+        <button id="nextBtn" disabled>ถัดไป</button>
+        <label class="toggle">
+          <input type="checkbox" id="autoToggle" checked />
+          ค้นหาอัตโนมัติ
+        </label>
+        <label class="toggle">
+          ถัดไปอัตโนมัติ (วินาที)
+          <input type="number" id="autoNextSec" value="0" min="0" step="15" style="width:90px;" />
+        </label>
+        <span class="status" id="status">ยังไม่เชื่อมต่อ</span>
+      </div>
+      <div class="controls">
+        <button id="micBtn" data-on="1">ปิดไมค์</button>
+        <button id="camBtn" data-on="1">ปิดกล้อง</button>
+        <button id="flipBtn">สลับกล้อง</button>
+      </div>
+      <div class="videos">
+        <div>
+          <div><strong id="localName">ฉัน</strong></div>
+          <video id="localVideo" autoplay playsinline muted></video>
+        </div>
+        <div>
+          <div><strong id="remoteName">คู่สนทนา</strong></div>
+          <video id="remoteVideo" autoplay playsinline></video>
+        </div>
+      </div>
+      <p>
+        หมายเหตุ: สำหรับ MVP ใช้ STUN สาธารณะของ Google และสัญญาณผ่าน WebSocket ภายในเซิร์ฟเวอร์นี้
+      </p>
+    </main>
+    <script type="module" src="/client.js"></script>
+  </body>
+  </html>
