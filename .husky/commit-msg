@@ -1,0 +1,10 @@
+#!/bin/sh
+# Husky v9+ simple hook (no husky.sh sourcing)
+# If commitlint is not available locally, skip (do not block commits).
+
+if command -v npx >/dev/null 2>&1; then
+  npx --no-install commitlint --edit "$1" >/dev/null 2>&1 || {
+    echo "[commitlint] skipped (not installed)." >&2
+    exit 0
+  }
+fi

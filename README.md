@@ -60,6 +60,24 @@ GitHub Actions (Build & Publish to GHCR)
   - ดึงอิมเมจมาใช้: `docker pull ghcr.io/<owner>/<repo>:<tag>`
   - ตรวจสอบแพ็คเกจได้ที่หน้า Packages ของ repo
 
+Conventional Commits + Auto Versioning (release-please)
+- ใช้ workflow `.github/workflows/release-please.yml` เพื่อสร้าง PR อัปเดตเวอร์ชัน/CHANGELOG อัตโนมัติเมื่อมี commit ใหม่เข้า `main`
+- ตั้งค่าด้วย `release-please-config.json` และ `.release-please-manifest.json`
+- วิธีการใช้งาน (แนะนำ):
+  - ใช้ข้อความ commit ตามมาตรฐาน Conventional Commits เช่น `feat: add auto-next timer`, `fix: requeue on next`
+  - เมื่อมีการ merge เข้าสาขา `main`, bot จะเปิด PR ชื่อ `chore(main): release <version>` ให้ตรวจและ merge
+  - เมื่อ merge PR นี้ ระบบจะสร้าง GitHub Release + อัปเดต `CHANGELOG.md` และ bump เวอร์ชันใน `package.json` ให้อัตโนมัติ
+  - Tag/Release ที่ถูกสร้างจะไปกระตุ้น workflow Docker ให้ build/push image อัตโนมัติ
+
+ตรวจสอบรูปแบบ PR/commit
+- Semantic PR title: `.github/workflows/semantic-pr.yml` ตรวจชื่อหัวข้อ PR ให้เป็นรูปแบบ Conventional Commits
+- Commit message lint: ติดตั้ง dev deps และ husky (optional):
+  ```
+  npm install
+  npx husky install
+  ```
+  ระบบจะมี hook `commit-msg` รัน `commitlint` ตรวจข้อความ commit ให้อัตโนมัติ
+
 โครงสร้าง
 - `server.js` — Express + WebSocket (`ws`) สำหรับเสิร์ฟหน้าเว็บและทำหน้าที่ signaling + matchmaker
 - `public/index.html` — หน้า UI หลัก
